@@ -72,3 +72,7 @@ why Windows containers can't run on Linux
 how image layers become writable containers
 
 If you ever misunderstood how Docker works, or you want to become a real architect, this session is for you.
+How Docker actually works,
+why it’s not a virtual machine,
+how containers share the OS kernel,
+and what really happens when you run a container
