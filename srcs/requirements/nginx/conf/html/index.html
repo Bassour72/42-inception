@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouBass website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Active link styling */
+        a.active {
+            color: #ff6347; /* Highlight color */
+            font-weight: bold; /* Bold text for active link */
+        }
+    </style>
+</head>
+<body>
+    <section id="header">
+        <div class="container">
+            <img src="images/logo.png" alt="logo" class="logo">
+            <div class="header-text">
+                <h1>This site for teaching programming and designing</h1>
+                <span class="square"></span>
+                <p>We provide online tutorials and courses in programming and design, 
+                    aiming to help individuals develop their skills in these rapidly evolving fields.
+                     Our experienced instructors deliver engaging lessons, making complex concepts 
+                     easy to understand, and ensuring that learners are equipped for success in
+                    the tech industry.</p>
+                <button class="btn">Read More</button>
+                <div class="line">
+                    <span class="line-1"></span><br>
+                    <span class="line-2"></span><br>
+                    <span class="line-3"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <nav id="sidenav">
+        <ul>
+            <li><a href="#header" id="home-link">Home</a></li>
+            <li><a href="#about-us" id="about-link">About us</a></li>
+            <li><a href="#features" id="features-link">Features</a></li>
+            <li><a href="#courses" id="courses-link">Courses</a></li>
+            <li><a href="#offers" id="offers-link">Offer</a></li>
+            <li><a href="#contact" id="contact-link">Contact us</a></li>
+        </ul>
+    </nav>
+    <img src="images/menu.png" id="menuBtn">
+
+    <!-- about us section -->
+    <section id="about-us">
+        <div class="about-left">
+            <img src="images/about.png">
+        </div>
+        <div class="about-right">
+            <div class="about-text">
+                <h1>About us</h1>
+                <span class="square"></span>
+                <p> We are a team of passionate individuals dedicated to making learning engaging and accessible.
+                    Our goal is to empower learners by offering high-quality resources that simplify
+                    complex concepts, from programming to design. With a focus on clarity and creativity,
+                    we strive to help individuals of all backgrounds succeed and grow in their skills.
+                </p><br>
+                <div class="line">
+                    <span class="line-1"></span><br>
+                    <span class="line-2"></span><br>
+                    <span class="line-3"></span>
+                </div>
+                <br>
+                <h2>"We are the best team to explain courses"
+                , Programming and Designing 
+                </h2>
+                <h3>YouBass</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="feature-row">
+            <div class="fecture-col">
+                <img src="images/pic-1.png">
+                <h4>Learn online</h4>
+                <p>We will explain the courses online</p>
+            </div>
+            <div class="fecture-col">
+                <img src="images/pic-2.png">
+                <h4>Learn online</h4>
+                <p>We will explain the courses online</p>
+            </div>
+            <div class="fecture-col">
+                <img src="images/pic-3.png">
+                <h4>Learn online</h4>
+                <p>We will explain the courses online</p>
+            </div>
+        </div>
+        <div class="feature-btn">
+            <div class="line">
+                <span class="line-1"></span><br>
+                <span class="line-2"></span><br>
+                <span class="line-3"></span>
+            </div>
+            <button class="btn">Get Started Free</button>
+        </div>
+    </section>
+
+    <!-- Courses -->
+    <section id="courses">
+        <div class="container co">
+            <div class="course-left">
+                <div class="course-text">
+                    <h1>Browse our Top <br>Courses</h1>
+                    <span class="square"></span>
+                    <p> Discover our wide range of courses designed to help you excel in your learning journey.
+                        Whether you're looking to sharpen your programming skills, dive into web design, 
+                        or explore new topics, we offer expert-led courses tailored to your needs. 
+                        Start your learning adventure today!
+                    </p>
+                    <button class="btn">View all Courses</button>
+                    <div class="line">
+                        <span class="line-1"></span><br>
+                        <span class="line-2"></span><br>
+                        <span class="line-3"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-right">
+                <img src="images/course.png">
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers -->
+    <section id="offers">
+        <div class="about-left">
+            <img src="images/offer.png">
+        </div>
+        <div class="about-right">
+            <div class="about-text">
+                <h1>Limitless Learn</h1>
+                <span class="square"></span>
+                <p>Discover the endless possibilities of learning. 
+                    Whether you're looking to enhance your skills, 
+                    explore new topics, or grow professionally, 
+                    our platform offers a wide range of courses tailored to meet your needs and interests.
+                </p><br>
+                <button class="btn">Start Now</button><br><br>
+                <div class="line">
+                    <span class="line-1"></span><br>
+                    <span class="line-2"></span><br>
+                    <span class="line-3"></span>
+                </div>
+                <br>
+                <h2>"We are the best team to explain courses"
+                , Programming and Designing 
+                </h2>
+                <h3>YouBass</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- contact us -->
+    <section id="contact">
+        <div class="container contactus">
+            <div class="contact-left">
+                <h1>Sign up to learn <br>on our site</h1>
+                <form>
+                    <input type="text" placeholder="username">
+                    <input type="email" placeholder="Email">
+                    <input type="password" placeholder="Password">
+                    <div class="btn-sign">
+                        <button class="btn">Sign up</button>
+                        <button class="btn">Login</button>
+                    </div>
+                </form>
+                <div class="line">
+                    <span class="line-1"></span><br>
+                    <span class="line-2"></span><br>
+                    <span class="line-3"></span>
+                </div>
+            </div>
+            <div class="contact-right">
+                <img src="images/contact.png">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="container footer-row">
+            <hr>
+            <div class="footer-left">
+                <div class="footer-links">
+                    <div class="links-title">
+                        <h4>Product</h4>
+                        <small>Our plan</small><br>
+                        <small>Free Trial</small>
+                    </div>
+                    <div class="links-title">
+                        <h4>Company</h4>
+                        <small>About us</small><br>
+                        <small>Contact</small>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-info">
+                    <div class="copy-write">
+                        <small>ybassour.com</small><br>
+                        <small>Copyright 2025 youbass</small><br>
+                        <small>+12119</small>
+                    </div>
+                    <div class="footer-logo">
+                        <img src="images/logo.png">
+                        <button class="btn">(*___*)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="social-icons">
+        <a href="https://www.facebook.com/">
+            <img src="images/facebook.png" title="Facebook">
+        </a>
+        <a>
+            <a href="https://fr.linkedin.com/">
+            <img src="images/linkedin.png" title="LinkedIn">
+        </a>
+        <a>
+            <a href="https://x.com/">
+            <img src="images/twitter.png" title="Twitter">
+        </a>
+        <a>
+            <a href="https://www.instagram.com/">
+            <img src="images/instagram.png" title="Instagram">
+        </a>
+    </div>
+
+    <script>
+        // Menu toggle
+        var mb = document.getElementById('menuBtn');
+        var sv = document.getElementById('sidenav');
+        sv.style.right = "-250px";
+        mb.onclick = function () {
+            if (sv.style.right == "-250px") {
+                sv.style.right = "0";
+            } else {
+                sv.style.right = "-250px";
+            }
+        };
+
+        // Add 'active' class to navigation links
+        const navLinks = document.querySelectorAll('#sidenav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
