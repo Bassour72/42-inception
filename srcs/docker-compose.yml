@@ -60,10 +60,11 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ybassour/data/mariadb
+      device: /home/${USER}/data/mariadb
   wp-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ybassour/data/wordpress
+      device: /home/${USER}/data/wordpress
+
