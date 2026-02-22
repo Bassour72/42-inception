@@ -1,0 +1,5 @@
+.env
+# secrets/*.txt TODO: unitl push to intra
+data/
+*.swp
+.DS_Store

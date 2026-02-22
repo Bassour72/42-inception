@@ -1,24 +1,24 @@
-FROM alpine:3.22.3
+FROM alpine:3.21
 
-# Install nginx and openssl
 RUN apk add --no-cache nginx openssl
 
-# Create directories
-RUN mkdir -p /run/nginx /etc/nginx/ssl /var/www/html
+# Create directories for SSL and Nginx runtime
+RUN mkdir -p /etc/nginx/ssl /run/nginx
 
-# Generate self-signed certificate for localhost
-RUN openssl req -x509 -nodes -days 365 \
-    -newkey rsa:2048 \
-    -keyout /etc/nginx/ssl/nginx.key \
-    -out /etc/nginx/ssl/nginx.crt \
-    -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=Inception/CN=localhost"
+# Generate SSL certificate using your 42 login
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/inception.key \
+    -out /etc/nginx/ssl/inception.crt \
+    -subj "/C=MA/ST=KH/L=Khouribga/O=42/OU=42/CN=ybassour.42.fr/UID=ybassour"
 
-# Copy NGINX config and HTML
-COPY conf/nginx.conf /etc/nginx/nginx.conf
+# Copy the config to the standard Alpine location
+COPY conf/nginx.conf /etc/nginx/http.d/default.conf
+
 COPY conf/html /var/www/html
-
-# Expose HTTPS port
 EXPOSE 443
 
-# Start NGINX in foreground
 CMD ["nginx", "-g", "daemon off;"]
+
+# Forward request and error logs to docker log collector
+# RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+#     && ln -sf /dev/stderr /var/log/nginx/error.log
