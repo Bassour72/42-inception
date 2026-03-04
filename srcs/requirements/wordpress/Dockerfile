@@ -2,6 +2,8 @@ FROM alpine:3.21
 
 # Install PHP-FPM and all required extensions
 RUN apk add --no-cache \
+    php83-tokenizer \
+    php83-pecl-redis \
     php83 \
     php83-fpm \
     php83-mysqli \
@@ -17,8 +19,11 @@ RUN apk add --no-cache \
     php83-phar \
     wget \
     ca-certificates \
-    mariadb-client
+    mariadb-client \
+    redis php83-pecl-redis
 
+# Create the user and group if they don't exist
+# RUN addgroup -S www-data && adduser -S www-data -G www-data
 
 
 # DO NOT SHORTEN THIS URL. IT MUST END WITH .phar
@@ -26,7 +31,6 @@ RUN apk add --no-cache \
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
-
 
 
 # Copy PHP-FPM config
