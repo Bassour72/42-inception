@@ -97,3 +97,27 @@ The MariaDB Root Myth: You are required to set up a database user for WordPress.
 The Entrypoint Script: To automate the WordPress installation (setting the site title, admin user, etc.), most use WP-CLI. How do you ensure this script only runs after the MariaDB container is fully initialized and ready to accept connections?
 Docker Network Drivers: By default, Docker Compose creates a bridge network. If you had to make your services accessible only to each other and not to the outside world (except via the NGINX gateway), how would you configure the network's internal flag?
 The Bonus - Redis Caching: When adding Redis as a bonus, which specific file in the WordPress root (/var/www/html/) must you modify to tell WordPress to use the Redis container as an object cache? 
+
+
+----------------
+
+*   **Docker Client (Command): You enter a command into the Docker CLI. The client translates this into a REST API call.**
+
+
+
+*   **Docker Daemon (Processing): The daemon (dockerd) receives the API call. It manages high-level features like images, volumes, and networking. If the required image isn't local, the daemon pulls it from a registry like Docker Hub.**
+
+
+
+*   **containerd (Management): The daemon passes the request to containerd, a high-level runtime. It converts the Docker image into an Open Container Initiative (OCI) bundle—a folder containing the filesystem and a configuration file.**
+
+
+*   **containerd-shim (Hand-off): containerd starts a small shim process for the new container. The shim's job is to sit between the runtime and the actual container to handle input/output and keep the container alive even if the daemon restarts.**
+
+
+
+*   **runc (Execution): The shim calls runc, the low-level runtime. runc interacts directly with the Linux Kernel to create the isolated environment using namespaces and control groups (cgroups). runc Exit: Once the container process has successfully started inside its isolated bubble,runc exits. It is only needed for the "start" phase.Running Container: The container is now in a "Running" state. The shim remains as the parent process to monitor the container and report its exit status back to**
+
+
+
+*   **A container is a lightweight, standalone, and executable package that includes everything needed to run an application—code, runtime, system tools, libraries, and settings.**

@@ -14,3 +14,21 @@ Which tool do you use (OpenSSL?), and why must the Common Name (CN) match your l
 [2] Docker Embedded DNS Server
 [3] Docker Compose Networking Guide
 [4] Configuring Subnets in Docker Compose
+
+
+ما هي مكونات Docker Engine وكيف تعمل معاً؟
+كيف يختلف Docker Engine عن تقنية VMware؟
+ما الفرق بين إصدارات CE و EE لمحرك Docker؟
+ما الفرق بين containerd و runc؟
+كيف يساعد مكون Shim في تحديث Docker دون توقف؟
+ما هي معايير OCI وكيف تؤثر على تصميم المحرك؟
+
+ما هي وظيفة مكون الـ Shim وكيف يمنع توقف الحاويات؟
+هل يمكن تشغيل حاويات ويندوز ولينكس معاً على نفس المحرك؟
+ما الفرق بين إصدارات Docker CE و Docker EE؟
+ما هي ميزة التحديث دون توقف في Docker؟
+كيف يختلف shim عن containerd في المهام؟
+هل يمكن تشغيل الحاويات إذا توقف محرك دوكر؟
+ما هو دور الـ Namespaces والـ Cgroups في عمل runc؟
+كيف يتعامل Shim مع المدخلات والمخرجات في الحاوية التفاعلية؟
+ما الذي يحدث إذا توقف containerd أثناء تشغيل الحاوية؟
