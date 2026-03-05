@@ -1,9 +1,13 @@
 version: '3.8'
 
 services:
+
+
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     image: mariadb:inception
     env_file: .env
     secrets:
@@ -33,26 +37,66 @@ services:
       timeout: 3s
       retries: 5
 
+
+
+  redis:
+    container_name: redis
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    image: redis:inception
+    networks:
+      - inception
+    volumes:
+      - redis-data:/data # Better for Redis persistence (RDB/AOF files)
+    command: ["redis-server", "--appendonly", "yes", "--protected-mode", "no"]
+
+
   wordpress:
     container_name: wordpress
-    build: ./requirements/wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     image: wordpress:inception
     env_file: .env
     secrets:
       - db_password
       - wp_admin_password
-      - wp_user_password # Add this
+      - wp_user_password
     depends_on:
       - mariadb
+      - redis
     networks:
       - inception
     volumes:
       - wp-data:/var/www/wordpress
     restart: always
 
+
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp
+    image: ftp:inception
+    # ADD THIS LINE TO LOAD YOUR .ENV FILE
+    env_file: .env
+    ports:
+      - "21:21"
+      - "30000-30050:30000-30050"
+    volumes:
+      - wp-data:/var/www/html
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PWD=${FTP_PWD}
+    networks:
+      - inception
+    restart: always
+
+
   nginx:
     container_name: nginx
-    build: ./requirements/nginx
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     image: nginx:inception
     ports:
       - "443:443"
@@ -71,8 +115,8 @@ secrets:
     file: ../secrets/db_password.txt
   wp_admin_password:
     file: ../secrets/credentials.txt
-  wp_user_password:
-    file: ../secrets/user_credentials.txt
+  wp_user_password: # Add this line
+    file: ../secrets/wp_user_password.txt
 
 networks:
   inception:
@@ -88,15 +132,13 @@ volumes:
   wp-data:
     driver: local
     driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/home/${USER}/data/wordpress'
+      type: none
+      o: bind
+      device: /home/${USER}/data/wordpress
   redis-data:
     driver: local
     driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/home/${USER}/data/redis'
-
-
+      type: none
+      o: bind
+      device: /home/${USER}/data/redis
 

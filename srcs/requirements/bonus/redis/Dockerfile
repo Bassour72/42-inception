@@ -1,17 +1,15 @@
 FROM alpine:3.21
 
-# Install Redis without local cache to keep image small
-RUN apk add --no-cache redis
+RUN apk update && apk add --no-cache redis
 
-# Copy the init script
-COPY tools/init.sh /init.sh
-RUN chmod +x /init.sh
+# Create data directory and set permissions
+RUN mkdir -p /data && chown redis:redis /data
 
-# Redis default port
+# Copy your setup script
+COPY ./tools/init.sh /usr/local/bin/redis_setup.sh
+RUN chmod +x /usr/local/bin/redis_setup.sh
+
 EXPOSE 6379
 
-# Use your init script to start Redis in the background (if needed) 
-# and then keep the container alive with a foreground process.
-ENTRYPOINT ["sh", "/init.sh"]
-
-
+# Use the script as the entrypoint
+ENTRYPOINT ["/usr/local/bin/redis_setup.sh"]

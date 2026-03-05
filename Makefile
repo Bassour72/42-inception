@@ -1,8 +1,8 @@
 
 all:
-	@mkdir -p /home/${USER}/data/mariadb
-	@mkdir -p /home/${USER}/data/wordpress
-	@mkdir -p /home/${USER}/data/redis
+	@mkdir -p /home/ybassour/data/mariadb
+	@mkdir -p /home/ybassour/data/wordpress
+	@mkdir -p /home/ybassour/data/redis
 	@docker compose -f ./srcs/docker-compose.yml up -d --build
 
 up: all
@@ -16,9 +16,9 @@ clean:
 	@docker compose -f srcs/docker-compose.yml down --rmi all -v
 
 fclean: clean
-	@sudo rm -rf /home/${USER}/data/mariadb
-	@sudo rm -rf /home/${USER}/data/wordpress
-	@sudo rm -rf /home/${USER}/data/redis
+	@sudo rm -rf /home/ybassour/data/mariadb
+	@sudo rm -rf /home/ybassour/data/wordpress
+	@sudo rm -rf /home/ybassour/data/redis
 
 re: fclean all
 

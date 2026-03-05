@@ -1,22 +1,20 @@
 FROM alpine:3.21
 
-# Install MariaDB and client
-RUN apk add --no-cache mariadb mariadb-client
+# 1. Install vsftpd, tools, and PAM support
+RUN apk add --no-cache vsftpd dos2unix linux-pam
 
-# Remove skip-networking to allow TCP connections
-RUN sed -i '/skip-networking/d' /etc/my.cnf.d/mariadb-server.cnf
+# 2. Create the config file (or COPY it if you have it locally)
+# If you have a local file, use: COPY conf/vsftpd.conf /etc/vsftpd.conf
+# This ensures vsftpd has its instructions.
+COPY conf/vsftpd.conf /etc/vsftpd.conf
 
-# Create necessary directories and set permissions
-RUN mkdir -p /run/mysqld /var/lib/mysql && \
-    chown -R mysql:mysql /run/mysqld /var/lib/mysql
+# 3. Fix for Alpine PAM authentication (vsftpd needs this to check passwords)
+RUN printf "auth required pam_unix.so\naccount required pam_unix.so\n" > /etc/pam.d/vsftpd
 
-# Copy the init script from the host to the container
-COPY tools/init.sh /init.sh
-RUN chmod +x /init.sh
+# 4. Prepare the setup script
+COPY tools/init.sh /usr/local/bin/setup.sh
+RUN dos2unix /usr/local/bin/setup.sh && chmod +x /usr/local/bin/setup.sh
 
-EXPOSE 3306
-
-# Start using the initialization script
-CMD ["/init.sh"]
+ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
 

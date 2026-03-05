@@ -1,35 +1,26 @@
 #!/bin/sh
-# Read the secrets
-set -e
-SQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
-SQL_PASSWORD=$(cat /run/secrets/db_password)
 
-# Ensure directories have the correct owner
-chown -R mysql:mysql /var/lib/mysql /run/mysqld
 
-# Initialize database if it's the first time
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing MariaDB data directory..."
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql --rpm
-    
-    # Start temporary server to set up users
-    # Replace $SQL_ROOT_PASSWORD, $SQL_DATABASE, etc., with your env variables
-    mysqld --user=mysql --bootstrap << EOF
-USE mysql;
-FLUSH PRIVILEGES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';
-CREATE DATABASE IF NOT EXISTS ${SQL_DATABASE};
-CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${SQL_DATABASE}.* TO '${SQL_USER}'@'%';
-FLUSH PRIVILEGES;
-EOF
+echo  "Mandatory directory for vsftpd to run.."
+mkdir -p /var/run/vsftpd/empty
+
+# Alpine-specific user creation with fixed UID 1000
+if ! id "$FTP_USER" >/dev/null 2>&1; then
+    adduser -D -u 1000 -h /var/www/html -s /bin/sh $FTP_USER
+    echo "$FTP_USER:$FTP_PWD" | chpasswd
 fi
 
-echo "Starting MariaDB server..."
-# Using --bind-address=0.0.0.0 allows connections from the WordPress container
-exec mysqld \
-  --user=mysql \
-  --datadir=/var/lib/mysql \
-  --bind-address=0.0.0.0 \
-  --port=3306 \
-  --console
+
+# 
+# Permissions fix
+
+# Ensure the root matches
+echo "Fix permissions for the WordPress volume..."
+chown -R 1000:1000 /var/www/html
+
+# Run vsftpd in foreground
+echo "Starting vsftpd on port 21..."
+exec /usr/sbin/vsftpd /etc/vsftpd.conf
+
+
+
