@@ -3,6 +3,8 @@ FROM alpine:3.21
 # Install PHP-FPM and all required extensions
 RUN apk add --no-cache \
     php83 \
+    php83-tokenizer \
+    php83-pecl-redis \
     php83-fpm \
     php83-mysqli \
     php83-json \
@@ -16,10 +18,11 @@ RUN apk add --no-cache \
     php83-zip \
     php83-phar \
     wget \
+    php83-ctype \ 
     ca-certificates \
     mariadb-client
 
-
+RUN ln -sf /usr/bin/php83 /usr/bin/php
 
 # DO NOT SHORTEN THIS URL. IT MUST END WITH .phar
 # Download the actual program file from the full path
