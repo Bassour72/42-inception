@@ -54,6 +54,26 @@ services:
       - wp-data:/var/www/wordpress
     restart: always
 
+
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp
+    image: ftp:inception
+    # ADD THIS LINE TO LOAD YOUR .ENV FILE
+    env_file: .env
+    ports:
+      - "21:21"
+      - "30000-30050:30000-30050"
+    volumes:
+      - wp-data:/var/www/html
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PWD=${FTP_PWD}
+    networks:
+      - inception
+    restart: always
+
+
   nginx:
     container_name: nginx
     build:

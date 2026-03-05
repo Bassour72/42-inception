@@ -18,9 +18,15 @@ RUN apk add --no-cache \
     php83-zip \
     php83-phar \
     wget \
-    php83-ctype \ 
+    php83-ctype \
     ca-certificates \
-    mariadb-client
+    mariadb-client \
+    php83-ftp \
+    php83-intl \
+    php83-session \
+    php83-xmlreader \
+    php83-zlib
+
 
 RUN ln -sf /usr/bin/php83 /usr/bin/php
 
@@ -30,7 +36,12 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
+# 2. Add this line HERE to modify the file you just copied
+RUN sed -i 's/user = .*/user = 1000/g' /etc/php83/php-fpm.d/www.conf && \
+    sed -i 's/group = .*/group = 1000/g' /etc/php83/php-fpm.d/www.conf
 
+# 3. Create the user so PHP-FPM doesn't crash when looking for user 1000
+RUN adduser -D -u 1000 myuser || true
 
 # Copy PHP-FPM config
 COPY conf/www.conf /etc/php83/php-fpm.d/www.conf
