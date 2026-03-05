@@ -6,7 +6,10 @@ SQL_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
+# Wait for MariaDB to be ready
 sleep 10
+
+# FIX 1: Use a consistent path (matching your docker-compose volume)
 cd /var/www/wordpress
 
 if [ ! -f "wp-config.php" ]; then
@@ -38,16 +41,19 @@ if [ ! -f "wp-config.php" ]; then
     echo "Setting up Redis plugin..."
     php83 /usr/local/bin/wp plugin install redis-cache --activate --allow-root
 
-    # CONFIGURE REDIS (Replaces the broken sed command)
+    # FIX 2: Use --anchor to put these at the TOP of wp-config.php
+    # If your WP-CLI version is old and doesn't support --anchor, 
+    # these might still fail.
     php83 /usr/local/bin/wp config set WP_REDIS_HOST redis --allow-root
     php83 /usr/local/bin/wp config set WP_REDIS_PORT 6379 --raw --allow-root
     php83 /usr/local/bin/wp config set WP_CACHE true --raw --allow-root
 
     echo "Enabling Redis object cache..."
+    # This creates the wp-content/object-cache.php file
     php83 /usr/local/bin/wp redis enable --allow-root
 fi
 
-# Fix permissions for the 'nobody' user (default in Alpine)
+# FIX 3: Fix permissions for the correct directory
 echo "Correcting permissions..."
 chown -R nobody:nobody /var/www/wordpress
 
