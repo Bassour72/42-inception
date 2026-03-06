@@ -1,24 +1,26 @@
 #!/bin/sh
-
-
-echo  "Mandatory directory for vsftpd to run.."
+echo "Mandatory directory for vsftpd to run.."
 mkdir -p /var/run/vsftpd/empty
 
-# Alpine-specific user creation with fixed UID 1000
+# 1. Create the FTP user
 if ! id "$FTP_USER" >/dev/null 2>&1; then
-    adduser -D -u 1000 -h /var/www/html -s /bin/sh $FTP_USER
+    adduser -D -u 1000 -h /var/www/wordpress -s /bin/sh $FTP_USER
     echo "$FTP_USER:$FTP_PWD" | chpasswd
 fi
 
+# 2. WAIT for WordPress to be ready
+echo "Waiting for WordPress to populate the volume..."
+while [ ! -d "/var/www/wordpress/wp-content" ]; do
+    sleep 2
+done
 
-# 
-# Permissions fix
+# 3. Fix permissions
+echo "Fixing permissions for the WordPress volume..."
+chown -R 1000:1000 /var/www/wordpress
+find /var/www/wordpress -type d -exec chmod 775 {} \;
+find /var/www/wordpress -type f -exec chmod 664 {} \;
+chmod -R 777 /var/www/wordpress/wp-content
 
-# Ensure the root matches
-echo "Fix permissions for the WordPress volume..."
-chown -R 1000:1000 /var/www/html
-
-# Run vsftpd in foreground
 echo "Starting vsftpd on port 21..."
 exec /usr/sbin/vsftpd /etc/vsftpd.conf
 

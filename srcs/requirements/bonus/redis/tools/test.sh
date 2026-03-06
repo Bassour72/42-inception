@@ -15,3 +15,6 @@ docker logs mariadb
 docker exec -it mariadb sh
 
 mariadb -u wpuser -p
+
+
+docker exec -it redis redis-cli monitor

@@ -50,27 +50,51 @@ if [ ! -f "wp-config.php" ]; then
     php83 -d memory_limit=-1 /usr/local/bin/wp redis enable --allow-root
 fi
 
-# 3. Inject FTP settings
-if ! grep -q "FTP_HOST" wp-config.php; then
-    echo "Injecting FTP settings..."
-    cat << EOF >> wp-config.php
+# # 3. Inject FTP settings
+# if ! grep -q "FTP_HOST" wp-config.php; then
+#     echo "Injecting FTP settings..."
+#     cat << EOF >> wp-config.php
 
+
+
+# This removes any existing FTP defines and sets the correct method
+# sed -i "/FTP_/d" wp-config.php
+# sed -i "/FS_METHOD/d" wp-config.php
+
+# echo "define('FS_METHOD', 'direct');" >> wp-config.php
+# Remove all old FS/FTP settings to avoid duplicates
+sed -i "/FS_METHOD/d" wp-config.php
+sed -i "/FTP_/d" wp-config.php
+
+# Inject ONLY the FTP settings
+# Replace your current FTP injection with this
+cat << EOF >> wp-config.php
 define('FS_METHOD', 'ftpext');
 define('FTP_HOST', 'ftp:21');
 define('FTP_USER', '${FTP_USER}');
 define('FTP_PASS', '${FTP_PWD}');
 define('FTP_SSL', false);
+define('FTP_PASSIVE', true);    # <--- ADD THIS
 define('FTP_BASE', '/');
 define('FTP_CONTENT_DIR', '/wp-content/');
 define('FTP_PLUGIN_DIR', '/wp-content/plugins/');
 EOF
-fi
-# 4. Final permissions (Crucial: 775 allows group writing)
-find /var/www/wordpress -type d -exec chmod 775 {} +
-find /var/www/wordpress -type f -exec chmod 664 {} +
 
-# 4. Final permissions
-chown -R 1000:1000 /var/www/wordpress
-chmod -R 775 /var/www/wordpress
+
+# 4. Fix Permissions ONCE and correctly
+echo "Setting final permissions..."
+# Give everything to nobody (the user running php-fpm)
+chown -R nobody:nobody /var/www/wordpress
+
+# Standard WP permissions
+find /var/www/wordpress -type d -exec chmod 755 {} \;
+find /var/www/wordpress -type f -exec chmod 644 {} \;
+
+# Ensure wp-content is fully writable for plugin installs
+chmod -R 777 /var/www/wordpress/wp-content
+
+echo "Starting PHP-FPM..."
+exec php-fpm83 -F
+
 echo "Starting PHP-FPM..."
 exec php-fpm83 -F

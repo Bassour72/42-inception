@@ -1,22 +1,29 @@
 FROM alpine:3.21
 
-# Install MariaDB and client
-RUN apk add --no-cache mariadb mariadb-client
+# Install PHP 8.3 and required extensions for MariaDB connection
+RUN apk update && apk add --no-cache \
+    php83 \
+    php83-fpm \
+    php83-mysqli \
+    php83-session \
+    php83-curl \
+    wget
 
-# Remove skip-networking to allow TCP connections
-RUN sed -i '/skip-networking/d' /etc/my.cnf.d/mariadb-server.cnf
+# Create the directory for Adminer
+WORKDIR /var/www/html
 
-# Create necessary directories and set permissions
-RUN mkdir -p /run/mysqld /var/lib/mysql && \
-    chown -R mysql:mysql /run/mysqld /var/lib/mysql
+# Download the latest Adminer PHP file and rename it to index.php
+RUN wget https://www.adminer.org -O index.php
 
-# Copy the init script from the host to the container
-COPY tools/init.sh /init.sh
-RUN chmod +x /init.sh
+# Create a user to match your UID 1000 for consistency
+RUN adduser -D -u 1000 myuser || true
 
-EXPOSE 3306
+# Copy a standard PHP-FPM configuration (you can reuse the one from WordPress)
+COPY conf/www.conf /etc/php83/php-fpm.d/www.conf
 
-# Start using the initialization script
-CMD ["/init.sh"]
+# Ensure ownership matches your shared volume user
+RUN chown -R 1000:1000 /var/www/html
 
+EXPOSE 9000
 
+CMD ["php-fpm83", "-F"]
