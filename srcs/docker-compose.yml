@@ -94,7 +94,7 @@ services:
       context: ./requirements/bonus/cAdvisor
       dockerfile: Dockerfile
     image: cadvisor:inception
-
+    # image: gcr.io/cadvisor/cadvisor
     ports:
       - "8080:8080"
 
@@ -110,10 +110,10 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
     restart: always
-
-
 
 
   nginx:
