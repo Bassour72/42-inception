@@ -121,3 +121,7 @@ The Bonus - Redis Caching: When adding Redis as a bonus, which specific file in 
 
 
 *   **A container is a lightweight, standalone, and executable package that includes everything needed to run an application—code, runtime, system tools, libraries, and settings.**
+
+
+# What is cAdvisor?
+**  *cAdvisor, short for Container Advisor, is an open-source tool developed by Google to monitor containers. It can collect, aggregate, process, and export container-based metrics such as CPU and memory usage, filesystem and network statistics. You can  easily use this tool in any containerized environment, ranging from a single Docker installation to a complete Kubernetes cluster.Kubecost uses cAdvisor as part of its.**
