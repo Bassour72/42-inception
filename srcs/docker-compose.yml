@@ -95,9 +95,9 @@ services:
       dockerfile: Dockerfile
     image: cadvisor:inception
     # image: gcr.io/cadvisor/cadvisor
-    ports:
-      - "8080:8080"
-
+    # ports:
+    #   - "8080:8080"
+    # command: -url_base=/cadvisor
     networks:
       - inception
 
