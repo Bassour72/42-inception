@@ -35,3 +35,30 @@ Which tool do you use (OpenSSL?), and why must the Common Name (CN) match your l
 44
 
 what is different between  Adminer and PhpMyAdmin
+
+
+what is different between  Adminer and PhpMyAdmin
+
+
+what is different between  Adminer and PhpMyAdmin
+=======
+the docker engine
+the six part spearater into thress part 
+docker-client CLI the docker command
+
+Docker demon for AIP and other thing's
+
+Containerd for check if the image under standrt of OCI  and i's hight level runtime and container supervoser like stop start ..
+Shim Enable demonless container
+runc take the image for containerd as OCI and craete conatiner runtime and interface to kernal primtive
+
+#   *Docker engine*
+*   **The Docker Client (CLI): The user-facing command-line interface. When you type a command like docker run, the Docker CLI acts as a "remote control," converting your request into an API call and sending it to the background daemon.**
+
+*   **The Docker Daemon (dockerd): Often called the "brain" of the engine, this background service manages high-level logic like image building, network routing, and volume management. It listens for API requests and delegates the actual running of containers to lower-level tools.**
+
+*   **Containerd (High-level Runtime): A specialized daemon that supervises the container lifecycle. Its job is to pull images from registries and ensure they conform to OCI (Open Container Initiative) standards. It handles starting, stopping, and pausing containers, but It does not execute the container process itself.containerd cannot actually create containers. It uses runc to do that. It converts the required Docker image into an OCI bundle and tells runc to use this to create a new containe.**
+
+*   **The Shim (containerd-shim): A tiny process created for every running container. Its main purpose is to enable "daemonless" containers, meaning if the Docker daemon or containerd crashes or needs an update, the container keeps running because the shim stays behind to manage it.**
+
+*   **runC (Low-level Runtime): The component that does the final "heavy lifting." It receives an OCI-compliant bundle (filesystem and config) from containerd and interacts directly with Linux Kernel primitives—like namespaces and cgroups—to build the isolated environment and start the containe**
