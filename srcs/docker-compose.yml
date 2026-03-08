@@ -91,9 +91,9 @@ services:
     build: ./requirements/bonus/static_site
     image: static_site:inception
     # ADD THIS LINE TO LOAD YOUR .ENV FILE
-    env_file: .env
-    ports:
-      - "80:80"
+    # env_file: .env
+    # ports:
+    #   - "80:80"
     networks:
       - inception
     restart: always

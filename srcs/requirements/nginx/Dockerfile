@@ -14,7 +14,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 # Copy the config to the standard Alpine location
 COPY conf/nginx.conf /etc/nginx/http.d/default.conf
 
-COPY conf/html /var/www/html
+# COPY conf/html /var/www/html
 EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
