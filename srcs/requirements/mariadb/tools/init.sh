@@ -6,7 +6,7 @@ SQL_PASSWORD=$(cat /run/secrets/db_password)
 
 # Ensure directories have the correct owner
 chown -R mysql:mysql /var/lib/mysql /run/mysqld
-
+#TODO: make the derictory to has to owner
 # Initialize database if it's the first time
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Initializing MariaDB data directory..."
