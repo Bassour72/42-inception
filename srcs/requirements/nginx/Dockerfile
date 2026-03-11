@@ -1,6 +1,6 @@
 FROM alpine:3.21
 
-RUN apk add --no-cache nginx openssl
+RUN apk add --no-cache nginx openssl apache2-utils
 
 # Create directories for SSL and Nginx runtime
 RUN mkdir -p /etc/nginx/ssl /run/nginx
@@ -16,8 +16,11 @@ COPY conf/nginx.conf /etc/nginx/http.d/default.conf
 
 # COPY conf/html /var/www/html
 EXPOSE 443
+COPY tools/init.sh /init.sh
+RUN chmod +x /init.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "/init.sh" ]
+# CMD ["nginx", "-g", "daemon off;"]
 
 # Forward request and error logs to docker log collector
 # RUN ln -sf /dev/stdout /var/log/nginx/access.log \

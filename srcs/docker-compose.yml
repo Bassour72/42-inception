@@ -131,6 +131,10 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - CADVISOR_USER=${CADVISOR_USER}
+      - CADVISOR_PWD=${CADVISOR_PWD}
     image: nginx:inception
     ports:
       - "443:443"
@@ -151,7 +155,8 @@ secrets:
     file: ../secrets/credentials.txt
   wp_user_password: # Add this line
     file: ../secrets/wp_user_password.txt
-
+  ca_user_password: # Add this line
+    file: ../secrets/ca_user_password.txt
 networks:
   inception:
     driver: bridge
