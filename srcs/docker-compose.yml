@@ -144,7 +144,9 @@ services:
       - inception
     volumes:
       - wp-data:/var/www/wordpress
-    restart: always
+    # restart: on_fialer
+    restart: always # TOdo on
+  
 
 secrets:
   db_root_password:
