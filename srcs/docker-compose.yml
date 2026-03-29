@@ -17,7 +17,7 @@ services:
       - inception
     volumes:
       - db-data:/var/lib/mysql
-    restart: always
+    restart: on-failure
   
 
   adminer:
@@ -28,7 +28,7 @@ services:
       - mariadb  # This is the only one that matters
     networks:
       - inception
-    restart: always
+    restart: on-failure
 
   redis:
     container_name: redis
@@ -38,7 +38,7 @@ services:
     image: redis:inception
     networks:
       - inception
-    restart: always
+    restart: on-failure
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -64,7 +64,7 @@ services:
       - inception
     volumes:
       - wp-data:/var/www/wordpress
-    restart: always
+    restart: on-failure
 
 
   ftp:
@@ -83,7 +83,7 @@ services:
       - FTP_PWD=${FTP_PWD}
     networks:
       - inception
-    restart: always
+    restart: on-failure
 
 
   static_site:
@@ -96,7 +96,7 @@ services:
     #   - "80:80"
     networks:
       - inception
-    restart: always
+    restart: on-failure
 
   cadvisor:
     container_name: cadvisor
@@ -123,7 +123,7 @@ services:
       - /dev/disk/:/dev/disk:ro
     devices:
       - /dev/kmsg
-    restart: always
+    restart: on-failure
 
 
   nginx:
@@ -145,7 +145,7 @@ services:
     volumes:
       - wp-data:/var/www/wordpress
     # restart: on_fialer
-    restart: always # TOdo on
+    restart: on-failure # TOdo on
   
 
 secrets:
