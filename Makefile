@@ -18,6 +18,7 @@ clean:
 	@docker compose -f srcs/docker-compose.yml down --rmi all -v
 
 fclean: clean
+	@sudo docker system prune -a --volumes
 	@sudo rm -rf /home/${USER}/data/mariadb
 	@sudo rm -rf /home/${USER}/data/wordpress
 	@sudo rm -rf /home/${USER}/data/redis
