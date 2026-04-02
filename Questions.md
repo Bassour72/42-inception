@@ -98,3 +98,48 @@ The Bonus - Redis Caching: When adding Redis as a bonus, which specific file in 
 
 
 ----------------
+
+"Why don't we use the Host driver for Inception?"
+Your Answer: "Because Inception requires isolation. The Host driver breaks the isolation between the container and the VM, which goes against the project's security goals."
+
+
+"Why are we using Volumes instead of Bind Mounts for Inception?"
+Your Answer: "The Inception subject requires us to use Volumes because they are managed by the Docker Daemon and provide better isolation. Bind mounts are less secure because they depend on the host's specific file structure, whereas volumes are portable and handled entirely by Docker."
+
+
+Docker Fundamentals
+Docker Architecture (Client, Daemon, Registry)
+Docker Workflow (Build → Ship → Run)
+Docker Images # DONE
+Docker Containers
+Difference Between Image and Container
+Dockerfile Overview
+Docker Build Process
+Docker Layers and Caching
+Docker Compose Overview
+Multi-Container Architecture
+Service Definition in Docker Compose
+Container Lifecycle (Create, Start, Stop, Remove)
+Docker Networking Basics
+Bridge Network (Default)
+Container Communication (DNS, Service Names)
+Port Mapping (Host vs Container Ports)
+Internal vs External Access
+Docker Volumes
+Data Persistence in Containers
+Volumes vs Bind Mounts
+Volume Use Cases (Database, WordPress)
+Docker Isolation (Namespaces & Cgroups)
+Resource Management (CPU, Memory Limits)
+Environment Variables in Docker
+Secrets Management (vs ENV)
+Docker Security Basics
+Image Security and Minimal Base Images
+Container Isolation Risks
+Docker Logs and Monitoring
+Healthchecks in Docker
+Debugging Containers
+Container Restart Policies
+Dependency Management Between Services
+Docker vs Virtual Machines
+Advantages and Limitations of Docker

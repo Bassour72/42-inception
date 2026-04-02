@@ -1,3 +1,4 @@
+# ybassour
 # 42-inception
 📌 Project Overview  Inception is a system administration project from 42 School that introduces Docker and container orchestration. The goal is to build a secure, multi-container infrastructure running a WordPress website using Docker Compose, without relying on pre-built images.
 
@@ -30,6 +31,69 @@
 *   **A container is a lightweight, standalone, and executable package that includes everything needed to run an application—code, runtime, system tools, libraries, and settings.**
 
 
+
+# What is a docker image:
+*   **A Docker image is an immutable, static file that serves as a standalone, executable software package. It includes everything needed to run an application: the source code, runtime, system tools, libraries, and environment settings.**
+
+# dockerfile
+# docker compose
+# docker built-time
+# docker run-time
+#
+
+# Docker Network Drivers
+
+### 1. Bridge Driver (Default)
+The **Bridge driver** creates a private internal network on the host. Containers in the same bridge network can communicate with each other (same subnet) but are **isolated** from the host’s external network unless ports are specifically mapped.
+
+### 2. Host Driver
+The **Host driver** removes network isolation between the container and the Docker host. The container does not get its own IP address; instead, it uses the **host's IP** directly and shares the host's networking namespace.
+
+### 3. IPvlan Driver
+The **IPvlan driver** gives users total control over IPv4 and IPv6 addressing. It connects containers to external networks or **VLANs** using the host's interface, but with better performance and less overhead than Macvlan.
+
+### 4. Macvlan Driver
+The **Macvlan driver** assigns a MAC address to each container, making it appear as a **physical device** on the network. The container connects directly to the physical network through the host's interface.
+
+### 5. None Driver
+The **None driver** completely disables the networking stack for a container. It provides the highest level of **isolation**, as the container has no external connectivity and no connection to other containers.
+
+### 6. Overlay Driver
+The **Overlay driver** is used in **Docker Swarm** or multi-host setups. It creates a distributed network across multiple Docker daemons, allowing containers on different physical hosts to communicate securely.
+
+
+
+# Docker Storage & Persistence
+
+In Docker, data persistence ensures that application data survives even if a container is stopped or deleted.
+
+## 1. Storage Concepts
+*   **Data Persistence:** Storing application data outside the container lifecycle using volumes or bind mounts.
+*   **Daemon Storage Backends:** How the Docker daemon manages image layers and the writable "container layer" on the host disk.
+
+---
+
+## 2. Storage Mount Options
+
+### A. Volume Mounts (Recommended)
+Volumes are the preferred mechanism for persisting data generated and used by Docker containers.
+*   **Managed by Docker:** They are stored in a part of the host filesystem that is managed entirely by Docker (`/var/lib/docker/volumes/` on Linux).
+*   **Lifecycle:** They exist independently of the container. Deleting a container does not delete the volume.
+*   **Performance:** They offer high performance and are ideal for databases (like MariaDB) or CMS content (like WordPress).
+*   **Safety:** You should only interact with volume data through Docker commands; manual modification on the host is not recommended.
+
+### B. Bind Mounts
+Bind mounts link a specific, user-defined path on the host machine to a path in the container.
+*   **Direct Access:** Both the host OS and the container can read/write to the same files simultaneously.
+*   **Use Case:** Highly useful during development for source code sharing, but less "isolated" than volumes.
+*   **Dependency:** They rely on the host machine having a specific directory structure already in place.
+
+### C. tmpfs Mounts (Bonus)
+*   **Non-Persistent:** Data is stored only in the host's **system memory (RAM)**.
+*   **Security:** Useful for storing sensitive credentials or temporary state that should never be written to the host's disk or the container's writable layer.
+
+
+
 # Virtual Machines vs Docker:
 
 | Feature              | Virtual Machines (VMs)            | Docker (Containers)              |
@@ -44,7 +108,43 @@
 | Scalability          | Slow (heavy resource demand)      | Fast (easy to spin up/down)      |
 -----------------------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------[DOCKER ENGINE]--------------------------------------------------------------------
+
+
+
+## 1. Secrets vs Environment Variables
+
+
+| Feature            | Environment Variables (ENV)       | Docker Secrets                    |
+|:-------------------|:---------------------------------:|:---------------------------------:|
+| **Security**       | Low (Visible in logs/inspect)     | High (Encrypted at rest/transit)  |
+| **Storage**        | Stored in container config        | Stored in Docker database         |
+| **Access**         | Available to all processes        | Mounted as a file in /run/secrets |
+| **Best Use**       | Non-sensitive configuration       | Passwords, Keys, Certificates     |
+| ------------------ | --------------------------------- | --------------------------------- |
+
+## 2. Docker Network vs Host Network
+
+
+| Feature            | Docker Network (Bridge)           | Host Network                      |
+|:-------------------|:---------------------------------:|:---------------------------------:|
+| **Isolation**      | High (Private internal subnet)    | None (Shared with Host OS)        |
+| **Security**       | Firewall protected (iptables)     | Direct access to host services    |
+| **Port Mapping**   | Required (e.g. -p 443:443)        | Not required (native ports)       |
+| **Inception Use**  | Mandatory for project isolation   | Prohibited by subject rules       |
+| ------------------ | --------------------------------- | --------------------------------- |
+
+## 3. Docker Volumes vs Bind Mounts
+
+
+| Feature            | Docker Volumes                    | Bind Mounts                       |
+|:-------------------|:---------------------------------:|:---------------------------------:|
+| **Management**     | Managed by Docker Daemon          | Managed by User/Host OS           |
+| **Path on Host**   | Internal (/var/lib/docker)        | Any User Path (e.g. /home/data)   |
+| **Security**       | High (Isolated from host users)   | Low (Host can modify/delete)      |
+| **Behavior**       | Populates volume with image data  | Host folder overwrites container  |
+| ------------------ | --------------------------------- | --------------------------------- |
+
+# ------------------------------------------------------------------[DOCKER ENGINE]---------------------------------------------------------
 ## What is Docker-Client
 *   **Docker Client (Command): You enter a command into the Docker CLI. The client translates this into a REST API call.**
 
@@ -63,7 +163,7 @@
 ## What is Runc
 *   **runc (Execution): The shim calls runc, the low-level runtime. runc interacts directly with the Linux Kernel to create the isolated environment using namespaces and control groups (cgroups). runc Exit: Once the container process has successfully started inside its isolated bubble,runc exits. It is only needed for the "start" phase.Running Container: The container is now in a "Running" state. The shim remains as the parent process to monitor the container and report its exit status back to**
 
-# --------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
 # What is cAdvisor?
@@ -85,3 +185,72 @@
 
 # Static_site
 *   *Static_site is a lightweight service in my infrastructure that serves pre-defined HTML/CSS files. It operates as a standalone container and is accessed through a specific route managed by your Nginx Reverse Proxy.*
+
+
+# What TLS
+## TLS Overview
+## What is TLS
+*   **TLS** is transport layer securet that user to secure connection between server and client.
+### Difference Between HTTP and HTTPS
+*   **HTTP** is hypertext tansport portocal that use the connect to web under some roles
+*   **HTTPS** is hypertext tansport portocal secure that use the connect to web under some roles and include encrption
+* **Difference** one use encrption and other not
+
+### How TLS Works (Handshake Process)
+
+CLIENT (Browser)                                NGINX (Proxy)
+
+|                                              |
+| 1. Client Hello (TLS Version, Cipher Suites, |
+|    Random Number)                            |
+|----------------------------------------------|
+|                                              |
+| 2. Server Hello (Chosen Cipher, Random Num,  |
+|    SSL Certificate + Public Key)             |
+|----------------------------------------------|
+|                                              |
+| 3. VERIFICATION: Client checks Cert against  |
+|    built-in Root CA Public Keys. (No SMS!)   |
+|                                              |
+| 4. KEY EXCHANGE: Client creates "Pre-master  |
+|    Secret", encrypts it with SERVER'S        |
+|    Public Key.                               |
+|----------------------------------------------|
+|                                              |
+| 5. DECRYPTION: Server uses its PRIVATE KEY   |
+|    to get the Secret.                        |
+|                                              |
+| 6. SESSION START: Both generate same         |
+|    "Symmetric Session Key".                  |
+|                                              |
+| :==== ALL FUTURE DATA IS ENCRYPTED ====>     |
+|                                              |
+
+
+
+### Certificates (Public Key, Private Key)
+
+### Certificate Authority (CA)
+Is the compny that sigin your certificate
+### Self-Signed Certificate vs Trusted Certificate
+self-signed is when you gererate your certificate with signed by any CA
+Trusted Certificated is compny like that signed your certificate and you have in root on your host
+
+### TLS Encryption (Symmetric vs Asymmetric)
+symmetric is use only  one key encrption data and decrption
+asymmetric it's use key for encrption and key for decrption like privet key and public key
+
+### TLS Termination (in Nginx)
+
+### Why Port 443 is Used
+beacuse is https port for securty
+
+### TLS in Reverse Proxy Architecture
+
+### Security Benefits of TLS
+The TSL secure connecton between  clien and server for the truset
+### Common TLS Vulnerabilities (MITM, Weak Ciphers)
+
+### TLS Configuration Best Practices
+
+### OpenSSL Role in TLS
