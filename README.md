@@ -144,6 +144,7 @@ Bind mounts link a specific, user-defined path on the host machine to a path in 
 | **Behavior**       | Populates volume with image data  | Host folder overwrites container  |
 | ------------------ | --------------------------------- | --------------------------------- |
 
+
 # ------------------------------------------------------------------[DOCKER ENGINE]---------------------------------------------------------
 ## What is Docker-Client
 *   **Docker Client (Command): You enter a command into the Docker CLI. The client translates this into a REST API call.**
@@ -187,70 +188,78 @@ Bind mounts link a specific, user-defined path on the host machine to a path in 
 *   *Static_site is a lightweight service in my infrastructure that serves pre-defined HTML/CSS files. It operates as a standalone container and is accessed through a specific route managed by your Nginx Reverse Proxy.*
 
 
-# What TLS
-## TLS Overview
+
+# TLS Overview
 ## What is TLS
-*   **TLS** is transport layer securet that user to secure connection between server and client.
-### Difference Between HTTP and HTTPS
-*   **HTTP** is hypertext tansport portocal that use the connect to web under some roles
-*   **HTTPS** is hypertext tansport portocal secure that use the connect to web under some roles and include encrption
-* **Difference** one use encrption and other not
 
-### How TLS Works (Handshake Process)
+* **TLS** (Transport Layer Security) is a protocol used to secure communication between a client and a server by providing encryption, integrity, and authentication.
+## Difference Between HTTP and HTTPS
+*   **HTTP** (HyperText Transfer Protocol) is used to transfer data between client and server, but it is not secure (data is sent in plain text).
+*   **HTTPS** (HyperText Transfer Protocol Secure) is HTTP over TLS, meaning the data is encrypted and protected.
+## Difference: HTTPS uses encryption (TLS), HTTP does not.
 
-CLIENT (Browser)                                NGINX (Proxy)
+## How TLS Works (Handshake Process)
 
-|                                              |
-| 1. Client Hello (TLS Version, Cipher Suites, |
-|    Random Number)                            |
-|----------------------------------------------|
-|                                              |
-| 2. Server Hello (Chosen Cipher, Random Num,  |
-|    SSL Certificate + Public Key)             |
-|----------------------------------------------|
-|                                              |
-| 3. VERIFICATION: Client checks Cert against  |
-|    built-in Root CA Public Keys. (No SMS!)   |
-|                                              |
-| 4. KEY EXCHANGE: Client creates "Pre-master  |
-|    Secret", encrypts it with SERVER'S        |
-|    Public Key.                               |
-|----------------------------------------------|
-|                                              |
-| 5. DECRYPTION: Server uses its PRIVATE KEY   |
-|    to get the Secret.                        |
-|                                              |
-| 6. SESSION START: Both generate same         |
-|    "Symmetric Session Key".                  |
-|                                              |
-| :==== ALL FUTURE DATA IS ENCRYPTED ====>     |
-|                                              |
+# CLIENT (Browser) NGINX (Proxy)
 
+## 1. Client Hello (TLS version, cipher suites, random number)
 
+## 2. Server Hello (chosen cipher, random number, certificate + public key)
 
-### Certificates (Public Key, Private Key)
+## 3. Verification: Client verifies the certificate using trusted Certificate Authorities (CA).
 
-### Certificate Authority (CA)
-Is the compny that sigin your certificate
-### Self-Signed Certificate vs Trusted Certificate
-self-signed is when you gererate your certificate with signed by any CA
-Trusted Certificated is compny like that signed your certificate and you have in root on your host
+## 4. Key Exchange: Client generates a pre-master secret and encrypts it using the server's public key.
 
-### TLS Encryption (Symmetric vs Asymmetric)
-symmetric is use only  one key encrption data and decrption
-asymmetric it's use key for encrption and key for decrption like privet key and public key
+## 5. Decryption: Server decrypts it using its private key.
 
-### TLS Termination (in Nginx)
+## 6. Session Start: Both generate the same symmetric session key.
 
-### Why Port 443 is Used
-beacuse is https port for securty
+=> All future communication is encrypted using symmetric encryption
 
-### TLS in Reverse Proxy Architecture
+# Certificates (Public Key, Private Key)
+*   **A certificate contains the server’s public key and identity.**
+*   **The public key is shared with clients.**
+*   **The private key is kept secret on the server.**
 
-### Security Benefits of TLS
-The TSL secure connecton between  clien and server for the truset
-### Common TLS Vulnerabilities (MITM, Weak Ciphers)
+# Certificate Authority (CA)
+*   **A Certificate Authority (CA) is a trusted organization that signs certificates to verify the identity of a server.**
 
-### TLS Configuration Best Practices
+# Self-Signed Certificate vs Trusted Certificate
+*   **Self-signed certificate: Generated and signed by yourself, not trusted by browsers by default.**
+*   **Trusted certificate: Signed by a recognized CA and trusted by browsers and operating systems.**
 
-### OpenSSL Role in TLS
+# TLS Encryption (Symmetric vs Asymmetric)
+*   **Symmetric encryption: Uses one shared key for encryption and decryption (fast, used after handshake).**
+#   Asymmetric encryption: Uses a public key and private key (used during handshake).**
+
+# TLS Termination (in Nginx)
+*   **TLS termination means Nginx handles encryption/decryption, then forwards requests to backend services (WordPress, cAdvisor) over the internal Docker network.**
+
+# Why Port 443 is Used
+*   **Port 443 is the standard port for HTTPS (secure HTTP over TLS).**
+
+# TLS in Reverse Proxy Architecture
+*   **The client connects securely to Nginx using HTTPS.**
+*   **Nginx decrypts the request and forwards it internally to containers (HTTP).**
+*   **This centralizes security and simplifies backend services.**
+
+# Security Benefits of TLS
+*   **Encrypts data (confidentiality)**
+*   **Protects data from modification (integrity)**
+*   **Verifies server identity (authentication)**
+
+# Common TLS Vulnerabilities (MITM, Weak Ciphers)
+*   **Man-in-the-Middle (MITM): attacker intercepts communication**
+*   **Weak ciphers: outdated encryption algorithms that can be broken**
+*   **I   nvalid certificates: can lead to spoofing attacks**
+
+# TLS Configuration Best Practices
+*   **Use TLS 1.2 or 1.3 only**
+*   **Disable weak ciphers and protocols**
+*   **Use strong certificates (2048-bit or higher)**
+*   **Redirect HTTP → HTTPS**
+*   **Keep certificates updated**
+
+# OpenSSL Role in TLS
+*   **OpenSSL is a tool used to generate certificates, keys, and test TLS connections.**
+*   **In this project, it is used to create the self-signed certificate for Nginx.**

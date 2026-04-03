@@ -14,6 +14,7 @@ until mariadb -h mariadb -u "$SQL_USER" -p"$SQL_PASSWORD" -e "SELECT 1;" > /dev/
     sleep 2
 done
 
+
 if [ ! -f "wp-config.php" ]; then
     echo "WordPress not found. Starting installation..."
 
