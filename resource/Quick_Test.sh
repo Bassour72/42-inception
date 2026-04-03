@@ -10,3 +10,5 @@
     curl -vk --tls-max 1.0 https://localhost
     curl -vk --tlsv1.0 https://localhost
 
+docker exec -it adminer ps aux
+docker exec -it adminer netstat -tln
