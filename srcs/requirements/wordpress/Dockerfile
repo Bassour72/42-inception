@@ -1,14 +1,12 @@
 FROM alpine:3.21
-
+# TODO: remove  php83-json \  php83-ftp \ ca-certificates \ php83-xml \ php83-xmlreader
 RUN apk add --no-cache \
-    php83-tokenizer \
-    php83-pecl-redis \
     php83 \
     php83-tokenizer \
     php83-pecl-redis \
     php83-fpm \
     php83-mysqli \
-    php83-json \
+    php83-json \ 
     php83-curl \
     php83-dom \
     php83-exif \
@@ -27,6 +25,7 @@ RUN apk add --no-cache \
     php83-session \
     php83-xmlreader \
     php83-zlib
+
 RUN ln -sf /usr/bin/php83 /usr/bin/php
 
 

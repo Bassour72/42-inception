@@ -14,3 +14,6 @@ https://www.tutorialworks.com/difference-docker-containerd-runc-crio-oci/#:~:tex
 
 https://redis.io/wp-content/uploads/2021/09/Redis-For-Dummies_FINAL.pdf
 https://medium.com/@jayprakash01/understanding-cgi-fastcgi-and-php-fpm-in-nginx-with-php-applications-a6a6c0b7b91d
+
+
+https://www.docker.com/blog/docker-best-practices-choosing-between-run-cmd-and-entrypoint/

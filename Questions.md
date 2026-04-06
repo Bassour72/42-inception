@@ -143,3 +143,27 @@ Container Restart Policies
 Dependency Management Between Services
 Docker vs Virtual Machines
 Advantages and Limitations of Docker
+
+
+What is diff between shell form and exec form
+
+When you build new image then create container from this image. the container is running  as nginx  in foreground then you run like this docker exec -it nginx sh 
+does the nginx still the mian proccess or sh and 
+
+which past of docker engine that responsble for push image to register
+
+the containerd is responsble of the create and run and stop a container.
+first thing's it's check in metadata meta.db if it's first it's not exsit on this file 
+If you  want to test the running container it's metadata it's found this id of the container and task active found the running process
+if you check for the stoped container you found in metadata and not in active task and status exsting and stoped
+
+the differnce between containerd & runc
+the containerd is responsble for the lifecircle of contaoiner and mange image like pull  and push
+the runc is responsble for create resource for the container that talk to kernal create cgroup and namespace
+runc is connect to kernal to  create the resource to container cgroup and namespace 
+cgroup of limit the resource like CUP and RAM and OI
+namespace it's give the container ioslotion
+like munt filesystem:root
+namesapce of networing:container it's owan ip address
+namwspace : UTS for ioslation hostname
+namespace PID

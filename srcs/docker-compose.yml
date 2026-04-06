@@ -2,7 +2,7 @@ version: '0.1'
 
 services:
 
-
+  
   mariadb:
     container_name: mariadb
     build:
@@ -25,7 +25,7 @@ services:
     build: ./requirements/bonus/Adminer
     image: adminer:inception
     depends_on:
-      - mariadb  # This is the only one that matters
+      - mariadb
     networks:
       - inception
     restart: on-failure
@@ -33,7 +33,7 @@ services:
   redis:
     container_name: redis
     build:
-      context: ./requirements/bonus/redis # Path to your redis folder
+      context: ./requirements/bonus/redis 
       dockerfile: Dockerfile
     image: redis:inception
     networks:
@@ -71,7 +71,6 @@ services:
     container_name: ftp
     build: ./requirements/bonus/ftp
     image: ftp:inception
-    # ADD THIS LINE TO LOAD YOUR .ENV FILE
     env_file: .env
     ports:
       - "21:21"
@@ -90,10 +89,6 @@ services:
     container_name: static_site
     build: ./requirements/bonus/static_site
     image: static_site:inception
-    # ADD THIS LINE TO LOAD YOUR .ENV FILE
-    # env_file: .env
-    # ports:
-    #   - "80:80"
     networks:
       - inception
     restart: on-failure
@@ -104,10 +99,6 @@ services:
       context: ./requirements/bonus/cAdvisor
       dockerfile: Dockerfile
     image: cadvisor:inception
-    # image: gcr.io/cadvisor/cadvisor
-    # ports:
-    #   - "8080:8080"
-    # command: -url_base=/cadvisor
     networks:
       - inception
 
@@ -144,7 +135,6 @@ services:
       - inception
     volumes:
       - wp-data:/var/www/wordpress
-    # restart: on_fialer
     restart: on-failure # TOdo on
   
 
@@ -155,10 +145,11 @@ secrets:
     file: ../secrets/db_password.txt
   wp_admin_password:
     file: ../secrets/credentials.txt
-  wp_user_password: # Add this line
+  wp_user_password: 
     file: ../secrets/wp_user_password.txt
-  ca_user_password: # Add this line
+  ca_user_password:
     file: ../secrets/ca_user_password.txt
+
 networks:
   inception:
     driver: bridge
