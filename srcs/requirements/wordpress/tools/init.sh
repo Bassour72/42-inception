@@ -51,29 +51,29 @@ sed -i "/FS_METHOD/d" wp-config.php
 sed -i "/FTP_/d" wp-config.php
 
 
-cat << EOF >> wp-config.php
-define('FS_METHOD', 'ftpext');
-define('FTP_HOST', 'ftp:21');
-define('FTP_USER', '${FTP_USER}');
-define('FTP_PASS', '${FTP_PWD}');
-define('FTP_SSL', false);
-define('FTP_PASSIVE', true);    # <--- ADD THIS
-define('FTP_BASE', '/');
-define('FTP_CONTENT_DIR', '/wp-content/');
-define('FTP_PLUGIN_DIR', '/wp-content/plugins/');
-EOF
-#TODO: to fix The Duplicate Problem
-# 
-# if ! grep -q "FTP_HOST" wp-config.php; then
-#     echo "Adding FTP configuration to wp-config.php..."
-#     cat << EOF >> wp-config.php
+# cat << EOF >> wp-config.php
 # define('FS_METHOD', 'ftpext');
 # define('FTP_HOST', 'ftp:21');
 # define('FTP_USER', '${FTP_USER}');
 # define('FTP_PASS', '${FTP_PWD}');
-# define('FTP_PASSIVE', true);
+# define('FTP_SSL', false);
+# define('FTP_PASSIVE', true);    # <--- ADD THIS
+# define('FTP_BASE', '/');
+# define('FTP_CONTENT_DIR', '/wp-content/');
+# define('FTP_PLUGIN_DIR', '/wp-content/plugins/');
 # EOF
-# fi
+#TODO: to fix The Duplicate Problem
+
+if ! grep -q "FTP_HOST" wp-config.php; then
+    echo "Adding FTP configuration to wp-config.php..."
+    cat << EOF >> wp-config.php
+define('FS_METHOD', 'ftpext');
+define('FTP_HOST', 'ftp:21');
+define('FTP_USER', '${FTP_USER}');
+define('FTP_PASS', '${FTP_PWD}');
+define('FTP_PASSIVE', true);
+EOF
+fi
 
 
 echo "Setting final permissions..."

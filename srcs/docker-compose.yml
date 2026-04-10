@@ -59,7 +59,6 @@ services:
     depends_on:
       - mariadb
       - redis
-      - ftp
     networks:
       - inception
     volumes:
@@ -69,9 +68,13 @@ services:
 
   ftp:
     container_name: ftp
-    build: ./requirements/bonus/ftp
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: Dockerfile
     image: ftp:inception
     env_file: .env
+    depends_on:
+      - wordpress
     ports:
       - "21:21"
       - "30000-30050:30000-30050"
@@ -87,7 +90,9 @@ services:
 
   static_site:
     container_name: static_site
-    build: ./requirements/bonus/static_site
+    build:
+      context: ./requirements/bonus/static_site
+      dockerfile: Dockerfile
     image: static_site:inception
     networks:
       - inception
@@ -135,7 +140,7 @@ services:
       - inception
     volumes:
       - wp-data:/var/www/wordpress
-    restart: on-failure # TOdo on
+    restart: on-failure 
   
 
 secrets:
@@ -169,17 +174,4 @@ volumes:
       o: bind
       device: '/home/${USER}/data/wordpress'
   
-  redis-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: '/home/${USER}/data/redis'
-
-  ca-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: '/home/${USER}/data/cadvisor'
 
