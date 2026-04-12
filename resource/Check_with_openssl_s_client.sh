@@ -18,3 +18,8 @@ for tls in 1 1_1 1_2 1_3; do
     openssl s_client -connect localhost:443 -$tls </dev/null 2>/dev/null \
     | grep -E 'Protocol|Cipher'
 done
+
+
+docker exec -it nginx wget -qO- http://nginx/adminer/
+curl -Lk https://ybassour.42.fr
+docker exec -it nginx nc -zv adminer 9000

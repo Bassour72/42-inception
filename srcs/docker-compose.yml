@@ -1,5 +1,5 @@
 version: '0.1'
-
+#TODO which one is best use environment: or env_file: .env
 services:
 
   
