@@ -1,6 +1,4 @@
-# ybassour
-
-# 42-inception
+*This project has been created as part of the 42 curriculum by **[ybassour]**.*
 
 ## 📌 Project Overview
 Inception is a system administration project from 42 School that introduces Docker and container orchestration.  
@@ -279,3 +277,6 @@ A container is a running instance of a Docker image.
     Used to generate certificates and keys.
 
 ---
+
+## 🤖 AI Usage Disclosure # DONE
+    The theoretical content and structural organization of this README file were drafted and formatted with the assistance of AI to ensure clear and concise explanations of the project's technical concepts.
